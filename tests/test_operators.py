@@ -108,6 +108,15 @@ def test_sigmoid(a: float) -> None:
     * It is  strictly increasing.
     """
     # TODO: Implement for Task 0.2.
+
+    sig_a = sigmoid(a)
+    assert 0.0 <= sig_a <= 1.0, "Sigmoid output is not within the range [0, 1]"
+    assert (
+        sigmoid(-a) == 1.0 - sig_a
+    ), "Sigmoid does not satisfy the property: 1 - sigmoid(a) == sigmoid(-a)"
+    assert sigmoid(0) == 0.5, "Sigmoid does not cross 0 at 0.5"
+    assert sigmoid(a + 1e-5) > sig_a, "Sigmoid is not strictly increasing"
+
     raise NotImplementedError("Need to implement for Task 0.2")
 
 
@@ -116,6 +125,10 @@ def test_sigmoid(a: float) -> None:
 def test_transitive(a: float, b: float, c: float) -> None:
     """Test the transitive property of less-than (a < b and b < c implies a < c)"""
     # TODO: Implement for Task 0.2.
+
+    if a < b and b < c:
+        assert a < c, "Transitive property of < does not hold"
+
     raise NotImplementedError("Need to implement for Task 0.2")
 
 
@@ -125,6 +138,10 @@ def test_symmetric() -> None:
     gives the same value regardless of the order of its input.
     """
     # TODO: Implement for Task 0.2.
+
+    x, y = 2.0, 3.0
+    assert mul(x, y) == mul(y, x), "Multiplication is not symmetric"
+
     raise NotImplementedError("Need to implement for Task 0.2")
 
 
@@ -134,6 +151,12 @@ def test_distribute() -> None:
     :math:`z \times (x + y) = z \times x + z \times y`
     """
     # TODO: Implement for Task 0.2.
+
+    x, y, z = 2.0, 3.0, 4.0
+    assert mul(z, add(x, y)) == add(
+        mul(z, x), mul(z, y)
+    ), "Multiplication does not distribute over addition"
+
     raise NotImplementedError("Need to implement for Task 0.2")
 
 
@@ -141,6 +164,11 @@ def test_distribute() -> None:
 def test_other() -> None:
     """Write a test that ensures some other property holds for your functions."""
     # TODO: Implement for Task 0.2.
+
+    x = 5.0
+    assert add(x, 0) == x, "Adding 0 does not return the original number"
+    assert add(0, x) == x, "Adding 0 does not return the original number"
+
     raise NotImplementedError("Need to implement for Task 0.2")
 
 
@@ -169,6 +197,11 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
     # TODO: Implement for Task 0.3.
+
+    total_sum = sum(ls1) + sum(ls2)
+    combined_sum = sum([x + y for x, y in zip(ls1, ls2)])
+    assert_close(total_sum == combined_sum)
+
     raise NotImplementedError("Need to implement for Task 0.3")
 
 
@@ -195,7 +228,6 @@ def test_negList(ls: List[float]) -> None:
 # ## Generic mathematical tests
 
 # For each unit this generic set of mathematical tests will run.
-
 
 one_arg, two_arg, _ = MathTest._tests()
 

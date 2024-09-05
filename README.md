@@ -6,3 +6,7 @@
 * Docs: https://minitorch.github.io/
 
 * Overview: https://minitorch.github.io/module0/module0/
+
+
+<img src="https://github.com/minitorch/minitorch-module-0-akhilvreddy/blob/master/answer.png" width="50%">
+* If image is not visible, click https://github.com/minitorch/minitorch-module-0-akhilvreddy/blob/master/answer.png
