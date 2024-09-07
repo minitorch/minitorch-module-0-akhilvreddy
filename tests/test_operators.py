@@ -3,6 +3,7 @@ from typing import Callable, List, Tuple
 import pytest
 from hypothesis import given
 from hypothesis.strategies import lists
+import math
 
 from minitorch import MathTest
 import minitorch
@@ -110,14 +111,30 @@ def test_sigmoid(a: float) -> None:
     # TODO: Implement for Task 0.2.
 
     sig_a = sigmoid(a)
-    assert 0.0 <= sig_a <= 1.0, "Sigmoid output is not within the range [0, 1]"
-    assert (
-        sigmoid(-a) == 1.0 - sig_a
-    ), "Sigmoid does not satisfy the property: 1 - sigmoid(a) == sigmoid(-a)"
-    assert sigmoid(0) == 0.5, "Sigmoid does not cross 0 at 0.5"
-    assert sigmoid(a + 1e-5) > sig_a, "Sigmoid is not strictly increasing"
 
-    raise NotImplementedError("Need to implement for Task 0.2")
+    # 1. Sigmoid output is always between 0 and 1
+    assert 0.0 <= sig_a <= 1.0, "Sigmoid output is not within the range [0, 1]"
+
+    # 2. One minus sigmoid is approximately the sigmoid of the negative
+    assert math.isclose(
+        sigmoid(-a), 1.0 - sig_a, abs_tol=1e-6
+    ), "1 - sigmoid(a) != sigmoid(-a)"
+
+    # 3. Sigmoid crosses 0.5 at a = 0
+    assert math.isclose(
+        sigmoid(0), 0.5, abs_tol=1e-6
+    ), "Sigmoid(0) is not approximately 0.5"
+
+    # 4. Sigmoid is strictly increasing
+    if a < 0:
+        assert sigmoid(a) < sigmoid(
+            a + 0.1
+        ), "Sigmoid is not strictly increasing for small negative values"
+    elif a > 0:
+        assert sigmoid(a - 0.1) < sigmoid(
+            a
+        ), "Sigmoid is not strictly increasing for small positive values"
+    # raise NotImplementedError("Need to implement for Task 0.2")
 
 
 @pytest.mark.task0_2
@@ -129,7 +146,7 @@ def test_transitive(a: float, b: float, c: float) -> None:
     if a < b and b < c:
         assert a < c, "Transitive property of < does not hold"
 
-    raise NotImplementedError("Need to implement for Task 0.2")
+    # raise NotImplementedError("Need to implement for Task 0.2")
 
 
 @pytest.mark.task0_2
@@ -142,7 +159,7 @@ def test_symmetric() -> None:
     x, y = 2.0, 3.0
     assert mul(x, y) == mul(y, x), "Multiplication is not symmetric"
 
-    raise NotImplementedError("Need to implement for Task 0.2")
+    # raise NotImplementedError("Need to implement for Task 0.2")
 
 
 @pytest.mark.task0_2
@@ -157,7 +174,7 @@ def test_distribute() -> None:
         mul(z, x), mul(z, y)
     ), "Multiplication does not distribute over addition"
 
-    raise NotImplementedError("Need to implement for Task 0.2")
+    # raise NotImplementedError("Need to implement for Task 0.2")
 
 
 @pytest.mark.task0_2
@@ -169,7 +186,7 @@ def test_other() -> None:
     assert add(x, 0) == x, "Adding 0 does not return the original number"
     assert add(0, x) == x, "Adding 0 does not return the original number"
 
-    raise NotImplementedError("Need to implement for Task 0.2")
+    # raise NotImplementedError("Need to implement for Task 0.2")
 
 
 # ## Task 0.3  - Higher-order functions
@@ -200,9 +217,9 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
 
     total_sum = sum(ls1) + sum(ls2)
     combined_sum = sum([x + y for x, y in zip(ls1, ls2)])
-    assert_close(total_sum == combined_sum)
+    assert_close(total_sum, combined_sum)
 
-    raise NotImplementedError("Need to implement for Task 0.3")
+    # raise NotImplementedError("Need to implement for Task 0.3")
 
 
 @pytest.mark.task0_3
