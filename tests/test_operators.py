@@ -108,8 +108,6 @@ def test_sigmoid(a: float) -> None:
     * It crosses 0 at 0.5
     * It is  strictly increasing.
     """
-    # TODO: Implement for Task 0.2.
-
     sig_a = sigmoid(a)
 
     # 1. Sigmoid output is always between 0 and 1
@@ -131,11 +129,15 @@ def test_sigmoid(a: float) -> None:
             a + 0.1
         ), "Sigmoid is not strictly increasing for small negative values"
     elif a > 0:
-        assert sigmoid(a - 0.1) < sigmoid(
-            a
-        ), "Sigmoid is not strictly increasing for small positive values"
+        if a > 10:  # Handle large values where precision becomes an issue
+            assert sigmoid(a - 0.1) <= sigmoid(
+                a
+            ), "Sigmoid is not strictly increasing for large positive values"
+        else:
+            assert sigmoid(a - 0.1) < sigmoid(
+                a
+            ), "Sigmoid is not strictly increasing for small positive values"
     # raise NotImplementedError("Need to implement for Task 0.2")
-
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
